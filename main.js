@@ -98,6 +98,7 @@ var status = 0;
             if (event.keyCode == 32) {
                 if(status == 1) {
                     stop();
+			$('#status').hide()
 		Cube.asyncScramble(function(alg) {
       let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
