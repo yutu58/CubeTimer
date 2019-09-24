@@ -43,10 +43,8 @@ var status = 0;
             if (event.keyCode == 32) {
                 if(status == 1) {
                     stop();
-		$.getscript("main.js",function(){
 		generateScramble();
-		});
-				}
+		}
  				if (timertrue == 0) {
                 timertrue = 1;
                 }
