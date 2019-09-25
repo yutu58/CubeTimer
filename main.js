@@ -36,7 +36,7 @@ function generateScramble() {
     $('#randomstate button').on('click', generateScramble);
   }
 
-	generateScrmable()
+	generateScramble()
 	
 	
   let start;
