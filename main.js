@@ -162,7 +162,7 @@ for (var i=0; i<times.length; i++){
     cell1 = row.insertCell()
     cell1.innerHTML = times[i]
     cell2 = row.insertCell() 
-    cell2.innerHTML = "scramble"
+    cell2.innerHTML = scrambles[i]
 }
 }
 
