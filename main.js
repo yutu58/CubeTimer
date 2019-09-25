@@ -1,3 +1,14 @@
+function generateScramble() {
+    // Hide the initialization status on first scramble
+    $('#status').hide();
+
+    // Generate a scramble
+    Cube.asyncScramble(function(alg) {
+      let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces
+      let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
+      $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
+    }
+
 (function() {
   'use strict';
 
@@ -24,16 +35,8 @@
     $('#randomstate button').on('click', generateScramble);
   }
 
-  function generateScramble() {
-    // Hide the initialization status on first scramble
-    $('#status').hide();
-
-    // Generate a scramble
-    Cube.asyncScramble(function(alg) {
-      let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces
-      let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
-      $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
-    });
+	generateScrmable()
+  );
   }
 
   let start;
