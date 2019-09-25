@@ -137,7 +137,7 @@ function check() {
     	scrambles = []
 	}
     else {
-    	scrambles = localStorage.savedtimes.split(",")
+    	scrambles = localStorage.savedscrambles.split(",")
 	}
 }
 
