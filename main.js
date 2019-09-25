@@ -169,7 +169,7 @@ for (var i=0; i<times.length; i++){
 function removetimes(){
 	clearTable();
    	localStorage.removeItem("savedtimes")
-    localStoarge.removeItem("savedscrambles")
+    	localStorage.removeItem("savedscrambles")
 }
 
 check();
