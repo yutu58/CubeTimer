@@ -115,3 +115,48 @@ var status = 0;
             }
         } 
     };
+
+//saving times
+var times;
+var tbody = document.getElementById("tbody"), row, cell1, cell2;
+
+function check() {
+	if (!localStorage.savedtimes){
+		times = []
+	}
+	else {
+		var savings = localStorage.savedtimes.split(",")
+		times = savings
+	}
+}
+
+
+function saveTime(){
+check(); //check if there are times saved
+clearTable(); //empty the current list of times
+times.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
+localStorage.savedtimes = times //resave new times
+makeTable();//make new list of times
+}
+
+function clearTable(){
+document.getElementById("tbody").innerHTML = ""
+}
+
+function makeTable() {
+for (var i=0; i<times.length; i++){
+    row = tbody.insertRow()  
+    cell1 = row.insertCell()
+    cell1.innerHTML = times[i]
+    cell2 = row.insertCell() 
+    cell2.innerHTML = "jan-maurits"
+}
+}
+
+function removetimes(){
+	localStorage.removeItem("savedtimes")
+	clearTable();
+}
+
+check();
+makeTable();
