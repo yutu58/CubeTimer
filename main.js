@@ -97,7 +97,7 @@ var scramble;
     }; 
     document.onkeydown = function(event) { 
         if (event) {
-            if (event.keyCode == 32) {
+            //if (event.keyCode == 32) {
                 if(status == 1) {
                     stop();
 			saveTime();
@@ -115,7 +115,7 @@ var scramble;
                 if (timertrue == 2) {
                 timertrue = 0;
                 } 
-            }
+            //}
         } 
     };
 
