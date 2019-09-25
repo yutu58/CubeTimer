@@ -8,7 +8,8 @@ function generateScramble() {
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
       $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
     }
-
+}
+		       
 (function() {
   'use strict';
 
