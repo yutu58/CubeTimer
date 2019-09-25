@@ -121,6 +121,7 @@ var scramble;
 
 //saving times
 var times;
+var scrambles;
 var tbody = document.getElementById("tbody"), row, cell1, cell2;
 
 function check() {
@@ -131,15 +132,24 @@ function check() {
 		var savings = localStorage.savedtimes.split(",")
 		times = savings
 	}
+    
+    if(!localStorage.savedscrambles){
+    	scrambles = []
+	}
+    else {
+    	scrambles = localStorage.savedtimes.split(",")
+	}
 }
 
 
 function saveTime(){
-check(); //check if there are times saved
-clearTable(); //empty the current list of times
+check(); //check if there are times/scrambles saved
+clearTable(); //empty the current list of times/scrambles
 times.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
+scrambles.push(scramble) //add new scramble to scramble-array
 localStorage.savedtimes = times //resave new times
-makeTable();//make new list of times
+localStorage.savedscrambles = scrambles //resave new scrambles
+makeTable();//make new list of times/scrambles
 }
 
 function clearTable(){
@@ -152,13 +162,14 @@ for (var i=0; i<times.length; i++){
     cell1 = row.insertCell()
     cell1.innerHTML = times[i]
     cell2 = row.insertCell() 
-    cell2.innerHTML = scramble
+    cell2.innerHTML = "scramble"
 }
 }
 
 function removetimes(){
-	localStorage.removeItem("savedtimes")
 	clearTable();
+   	localStorage.removeItem("savedtimes")
+    localStoarge.removeItem("savedscrambles")
 }
 
 check();
