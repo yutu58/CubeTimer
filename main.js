@@ -57,6 +57,7 @@
 var status = 0; 
     var time = 0;
     var timertrue = 0;
+var scramble;
                   
     function start(){
         status = 1;
