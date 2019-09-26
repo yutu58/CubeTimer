@@ -22,6 +22,7 @@
     // Show the scrambler
     $('#randomstate').css('visibility', 'visible');
     $('#randomstate button').on('click', generateScramble);
+	  generateScramble();
   }
 
 	function generateScramble() {
