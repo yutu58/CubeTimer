@@ -9,6 +9,20 @@
   <style>
     #randomstate {
     }
+    
+    .header {
+	      width: 5%;
+				height: 100%;
+				background: #bbb;
+				font-size: 20px;
+				line-height: 50px;
+				text-align: center;
+        position: right;
+        z-index: 1;
+        overflow-x: hidden;
+        position: fixed;
+        right: 0;
+			}
   </style>
     
   <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
@@ -20,6 +34,11 @@
 </head>
 
 <body>
+<div class="header">
+	<p id="selectedsession">333</p>
+	<p><img src="https://i.imgur.com/5fWPrlp.jpg" width="70%" onclick="switchEvent(333)"></p>
+    <p><img src="https://i.imgur.com/DppaDAL.jpg" width="70%" onclick="switchEvent(222)"></p>
+</div>
   <p id="status"></p>
   <p id="randomstate">
     <!--<button>Generate random scramble</button><br>-->
