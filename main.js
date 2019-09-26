@@ -126,6 +126,7 @@ var selectedEvent;
 
 function switchEvent(p){
 document.getElementById("selectedsession").innerHTML = p
+check()
 selectedEvent = p
 clearTable()
 makeTable(p)
