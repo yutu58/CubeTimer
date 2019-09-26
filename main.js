@@ -57,7 +57,6 @@
 var status = 0; 
     var time = 0;
     var timertrue = 0;
-var scramble;
                   
     function start(){
         status = 1;
@@ -97,17 +96,12 @@ var scramble;
     }; 
     document.onkeydown = function(event) { 
         if (event) {
-            //if (event.keyCode == 32) {
+            
                 if(status == 1) {
                     stop();
-			saveTime();
+                    saveTime();
 			$('#status').hide()
-		Cube.asyncScramble(function(alg) {
-      let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces
-      let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
-      $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
-	scramble = alg
-    });
+		
 		}
  				if (timertrue == 0) {
                 timertrue = 1;
@@ -115,62 +109,110 @@ var scramble;
                 if (timertrue == 2) {
                 timertrue = 0;
                 } 
-            //}
+            
         } 
     };
 
+var selectedEvent;
+//switch between sessions
+
+function switchEvent(p){
+document.getElementById("selectedsession").innerHTML = p
+selectedEvent = p
+clearTable()
+makeTable(p)
+//generate 2x2 scramble
+}
+
 //saving times
-var times;
-var scrambles;
+var times333;
+var scrambles333;
+var times222;
+var scrambles222;
 var tbody = document.getElementById("tbody"), row, cell1, cell2;
 
 function check() {
-	if (!localStorage.savedtimes){
-		times = []
+	if (!localStorage.savedtimes333){
+		times333 = []
 	}
 	else {
-		var savings = localStorage.savedtimes.split(",")
-		times = savings
+		var savings333 = localStorage.savedtimes333.split(",")
+		times333 = savings333
 	}
     
-    if(!localStorage.savedscrambles){
-    	scrambles = []
+    if(!localStorage.savedscrambles333){
+    	scrambles333 = []
 	}
     else {
-    	scrambles = localStorage.savedscrambles.split(",")
+    	scrambles333 = localStorage.savedscrambles333.split(",")
 	}
+    
+    if (!localStorage.savedtimes222){
+		times222 = []
+	}
+	else {
+		times222 = localStorage.savedtimes222.split(",")		
+	}
+    
+    if(!localStorage.savedscrambles222){
+    	scrambles222 = []
+	}
+    else {
+    	scrambles222 = localStorage.savedscrambles222.split(",")
+	}
+    
 }
-
 
 function saveTime(){
 check(); //check if there are times/scrambles saved
 clearTable(); //empty the current list of times/scrambles
-times.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
-scrambles.push(scramble) //add new scramble to scramble-array
-localStorage.savedtimes = times //resave new times
-localStorage.savedscrambles = scrambles //resave new scrambles
-makeTable();//make new list of times/scrambles
+if (selectedEvent == 333){
+	times333.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
+	scrambles333.push(scramble) //add new scramble to scramble-array
+	localStorage.savedtimes333 = times333 //resave new times
+	localStorage.savedscrambles333 = scrambles333 //resave new scrambles
+	makeTable(333);//make new list of times/scrambles
+	}
+if (selectedEvent == 222){
+	times222.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
+	scrambles222.push(scramble) //add new scramble to scramble-array
+	localStorage.savedtimes222 = times222 //resave new times
+	localStorage.savedscrambles222 = scrambles222 //resave new scrambles
+	makeTable(222);//make new list of times/scrambles
+}
 }
 
 function clearTable(){
 document.getElementById("tbody").innerHTML = ""
 }
 
-function makeTable() {
-for (var i=0; i<times.length; i++){
-    row = tbody.insertRow()  
-    cell1 = row.insertCell()
-    cell1.innerHTML = times[i]
-    cell2 = row.insertCell() 
-    cell2.innerHTML = scrambles[i]
+function makeTable(p) {
+if (p == 333){
+	for (var i=0; i<times333.length; i++){
+    		row = tbody.insertRow()  
+    		cell1 = row.insertCell()
+    		cell1.innerHTML = times333[i]
+    		cell2 = row.insertCell() 
+    		cell2.innerHTML = scrambles333[i]
+	}
+}
+else if (p == 222){
+	for (var i=0; i<times222.length; i++){
+   		row = tbody.insertRow()  
+    		cell1 = row.insertCell()
+    		cell1.innerHTML = times222[i]
+    		cell2 = row.insertCell() 
+    		cell2.innerHTML = scrambles222[i]
+	}
 }
 }
 
 function removetimes(){
 	clearTable();
-   	localStorage.removeItem("savedtimes")
-    	localStorage.removeItem("savedscrambles")
+   	localStorage.removeItem("savedtimes" + selectedEvent)
+    localStorage.removeItem("savedscrambles" + selectedEvent)
 }
 
 check();
-makeTable();
+selectedEvent = 333
+makeTable(333);
