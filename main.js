@@ -101,7 +101,12 @@ var status = 0;
                     stop();
                     saveTime();
 			$('#status').hide()
-		
+		Cube.asyncScramble(function(alg) {	
+      let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces	
+      let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;	
+      $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);	
+	scramble = alg	
+    });
 		}
  				if (timertrue == 0) {
                 timertrue = 1;
