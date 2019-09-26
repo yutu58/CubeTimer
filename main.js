@@ -138,7 +138,7 @@ var times333;
 var scrambles333;
 var times222;
 var scrambles222;
-var tbody = document.getElementById("tbody"), row, cell1, cell2;
+var tbody = document.getElementById("tbody"), row, cell1, cell2, cell3;
 
 function check() {
 	if (!localStorage.savedtimes333){
@@ -203,6 +203,15 @@ if (p == 333){
     		cell1.innerHTML = times333[i]
     		cell2 = row.insertCell() 
     		cell2.innerHTML = scrambles333[i]
+		    if (i>=4){
+    var t333ao5 = [parseFloat(times333[i]), parseFloat(times333[i-1]), parseFloat(times333[i-2]), parseFloat(times333[i-3]), parseFloat(times333[i-4])];
+    const arrSum = arr => arr.reduce((a,b) => a + b, 0)
+    const arrMin = arr => Math.min(...arr)
+    const arrMax = arr => Math.max(...arr)
+    var ao5 = ((arrSum(t333ao5) - arrMin(t333ao5) - arrMax(t333ao5)) / 3).toFixed(3)
+    cell3 = row.insertCell()
+    cell3.innerHTML = ao5
+    }
 	}
 }
 else if (p == 222){
@@ -212,6 +221,15 @@ else if (p == 222){
     		cell1.innerHTML = times222[i]
     		cell2 = row.insertCell() 
     		cell2.innerHTML = scrambles222[i]
+		    if (i>=4){
+    var t222ao5 = [parseFloat(times222[i]), parseFloat(times222[i-1]), parseFloat(times222[i-2]), parseFloat(times222[i-3]), parseFloat(times222[i-4])];
+    const arrSum = arr => arr.reduce((a,b) => a + b, 0)
+    const arrMin = arr => Math.min(...arr)
+    const arrMax = arr => Math.max(...arr)
+    var ao5 = ((arrSum(t222ao5) - arrMin(t222ao5) - arrMax(t222ao5)) / 3).toFixed(3)
+    cell3 = row.insertCell()
+    cell3.innerHTML = ao5
+    }
 	}
 }
 }
