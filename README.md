@@ -11,7 +11,7 @@ CubeTimer is a speedcubing timer being developed by Mattheo de Wit (2015WITM01).
 * Added inspection-time option
 * Added more sessions (WCA & casual)
 * New layout
- * Created sidebar at the right
+  * Created sidebar at the right
   * More sessions are now shown
   * Added a button for the settings
   * Added a button to export/import times
