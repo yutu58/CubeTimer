@@ -4,8 +4,8 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Cube Timer v0.0.3</title>
-  <meta name="description" content="Cube Timer v0.0.1">
+  <title>Cube Timer v0.1.0</title>
+  <meta name="description" content="Cube Timer v0.1.0">
   <style>
     #randomstate {
     }
@@ -35,6 +35,7 @@
       overflow-x: hidden;
       position: fixed;
       display: block;
+      z-index: 1;
     }
     
     .test{
@@ -53,8 +54,38 @@
       font-size: 30px;
     }
 
-    .clickable {cursor: pointer;}
+    .clickable {
+      cursor: pointer;
+      text-align: center;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      }
 
+    .bottom {
+      border-bottom: 5px solid red;
+    }
+
+    .sidebar{
+
+    }
+
+    li{
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    #settingsmenu {
+      visibility: hidden;
+      z-index: 100;
+      position: absolute;
+      height: 50%;
+      width: 50%;
+      text-align: center;
+      margin-left: 25%;
+      background-color: #bbb;
+      border-radius: 5%;
+    }
+    
   </style>
     
   <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
@@ -66,13 +97,31 @@
 </head>
 
 <body>
+<!--Settings menu -->
+<div id="settingsmenu">
+  <p>Inspection time:</p>
+  <p onclick="inspectionf()">Toggle</p>
+  <p id="inspectiOn"></p>
+  <button style="margin-top:20%" onclick="closeSettings()">Close</button>
+</div>
+
   <div class="headerLeft">
-    <p><img src="https://i.imgur.com/8cc3QHz.jpg" width="70%" onclick="removetimes()" class="clickable"></p>
+    <p class="bottom"><img src="https://i.imgur.com/8cc3QHz.jpg" width="70%" onclick="removetimes()" class="clickable"></p>
+
+    <ul style="list-style-type:none;padding:0;">  
+      <li id="ao5atm">--.--</li>
+      <li id="ao12atm">--.--</li>
+    </ul>
   </div>
+
+
+
+
 <div class="headerRight">
+  <p class="bottom"><img src="https://i.imgur.com/lrhLUdi.jpg" width="80%" onclick="settings()" class="clickable"></p>
 	<p id="selectedsession">333</p>
-	<p><img src="https://i.imgur.com/5fWPrlp.jpg" width="70%" onclick="switchEvent(333)" class="clickable"></p>
-    <p><img src="https://i.imgur.com/DppaDAL.jpg" width="70%" onclick="switchEvent(222)" class="clickable"></p>
+	<p class="clickable"><img src="https://i.imgur.com/Ajdx9BE.jpg" width="70%" onclick="switchEvent(333)"</p>
+    <p class="clickable"><img src="https://i.imgur.com/ayQpXoY.jpg" width="70%" onclick="switchEvent(222)"></p>
 </div>
 <div class="test">
   <p id="status"></p>
