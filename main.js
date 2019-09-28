@@ -256,8 +256,9 @@ function makeTable(p) { //makes table + calculates averages
       cell2 = row.insertCell()
       cell2.innerHTML = scrambles222[i]
       if (i >= 4) {
-        var t222ao5 = [parseFloat(times222[i]), parseFloat(times222[i - 1]), parseFloat(times222[i - 2]), parseFloat(times222[i - 3]), parseFloat(times222[i - 4])];
-        const arrSum = arr => arr.reduce((a, b) => a + b, 0)
+        var t222ao5 = [times222[i], times222[i - 1], times222[i - 2], times222[i - 3], times222[i - 4]];
+        floatTimes(t222ao5);
+	const arrSum = arr => arr.reduce((a, b) => a + b, 0)
         const arrMin = arr => Math.min(...arr)
         const arrMax = arr => Math.max(...arr)
         var ao5 = ((arrSum(t222ao5) - arrMin(t222ao5) - arrMax(t222ao5)) / 3).toFixed(3)
