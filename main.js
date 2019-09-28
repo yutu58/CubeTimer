@@ -141,9 +141,10 @@ var scrambles222;
 var pbsingle;
 var pbao5;
 var pbao12;
+var inspection;
 var tbody = document.getElementById("tbody"), row, cell1, cell2, cell3, cell4;
 
-function check() {
+function check() { //resets everything to saved values or NULL
   if (!localStorage.savedtimes333) {
     times333 = []
   }
@@ -172,8 +173,22 @@ function check() {
   else {
     scrambles222 = localStorage.savedscrambles222.split(",")
   }
-    document.getElementById("currentAo5").innerHTML = "Ao5: --.--"
+  if (!localStorage.savedinspection) {
+    inspection = false
+  }
+  else {
+    if (localStorage.savedinspection == 'true') {
+    inspection = localStorage.savedinspection
+    }
+    else if (localStorage.savedinspection == 'false') {
+    inspection = false //this because localStorage saves booleans as strings, so (inspection) will return true instead of false
+    }
+    document.getElementById("inspectiOn").innerHTML = inspection
+  }
+  document.getElementById("currentAo5").innerHTML = "Ao5: --.--"
   document.getElementById("currentAo12").innerHTML = "Ao12: --.--"
+  document.getElementById("ao5atm").innerHTML = "--.--"
+  document.getElementById("ao12atm").innerHTML = "--.--"
 }
 
 function saveTime() {
@@ -215,6 +230,7 @@ function makeTable(p) { //makes table + calculates averages
         const arrMax = arr => Math.max(...arr)
         var ao5 = ((arrSum(t333ao5) - arrMin(t333ao5) - arrMax(t333ao5)) / 3).toFixed(3)
         document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
+        document.getElementById("ao5atm").innerHTML = ao5
         cell3 = row.insertCell()
         cell3.innerHTML = ao5
       }
@@ -226,6 +242,7 @@ function makeTable(p) { //makes table + calculates averages
         const arrMax = arr => Math.max(...arr)
         var ao12 = ((arrSum(t333ao12) - arrMin(t333ao12) - arrMax(t333ao12)) / 10).toFixed(3)
         document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
+        document.getElementById("ao12atm").innerHTML = ao12
         cell4 = row.insertCell()
         cell4.innerHTML = ao12
       }
@@ -245,6 +262,7 @@ function makeTable(p) { //makes table + calculates averages
         const arrMax = arr => Math.max(...arr)
         var ao5 = ((arrSum(t222ao5) - arrMin(t222ao5) - arrMax(t222ao5)) / 3).toFixed(3)
         document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
+        document.getElementById("ao5atm").innerHTML = ao5
         cell3 = row.insertCell()
         cell3.innerHTML = ao5
       }
@@ -256,6 +274,7 @@ function makeTable(p) { //makes table + calculates averages
         const arrMax = arr => Math.max(...arr)
         var ao12 = ((arrSum(t222ao12) - arrMin(t222ao12) - arrMax(t222ao12)) / 10).toFixed(3)
         document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
+        document.getElementById("ao12atm").innerHTML = ao12
         cell4 = row.insertCell()
         cell4.innerHTML = ao12
       }
@@ -285,3 +304,21 @@ makeTable(333);
 window.onkeydown = function(e) { 
   return !(e.keyCode == 32);
 };
+
+function settings() {
+    document.getElementById("settingsmenu").style.visibility = "visible"
+}
+function closeSettings() {
+    document.getElementById("settingsmenu").style.visibility = "hidden"
+}
+
+function inspectionf(){
+  if (inspection) {
+    inspection = false
+  }
+  else if (!inspection){
+    inspection = true
+  }
+  document.getElementById("inspectiOn").innerHTML = inspection
+  localStorage.savedinspection = inspection
+}
