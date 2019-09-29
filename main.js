@@ -30,12 +30,16 @@
     $('#status').hide();
 
     // Generate a scramble
+    if (selectedEvent == 333) {
     Cube.asyncScramble(function (alg) {
       let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
       $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
       scramble = alg
     })
+    } else if (selectedEvent == 222) {
+      scramble = scramblers["222"].getRandomScramble().scramble_string
+    }
   }
 
 
@@ -56,12 +60,20 @@
 })();
 
 function generateScramble2(){
-      Cube.asyncScramble(function (alg) {
-        let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces	
-        let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
-        $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
-        scramble = alg
-      });
+    if (selectedEvent == 333) {
+    Cube.asyncScramble(function (alg) {
+      let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces
+      let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
+      $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
+      scramble = alg
+    })
+    } else if (selectedEvent == 222) {
+      let alg = scramblers["222"].getRandomScramble().scramble_string
+      let safeAlgo = alg.replace(/\s+/g, '')
+      let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=2&alg=x2${safeAlgo}`;
+      $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
+      scramble = alg
+    }
 }
 
 //timer
@@ -139,12 +151,14 @@ var selectedEvent;
 //switch between sessions
 
 function switchEvent(p) {
+  if (p != selectedEvent) {
   document.getElementById("selectedsession").innerHTML = p
   check()
   selectedEvent = p
   clearTable()
   makeTable(p)
-  //generate 2x2 scramble
+  generateScramble2()
+  }
 }
 
 //saving times
