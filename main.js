@@ -55,71 +55,85 @@
   });
 })();
 
-//timer
-var status = 0;
-var time = 0;
-var timertrue = 0;
-var scramble;
-
-function start() {
-  status = 1;
-  d1 = new Date();
-  newStartTime = d1.getTime();
-  document.getElementById("startBtn").disabled = true;
-  document.getElementById('timerLabel').innerHTML = 'timing';
-
-}
-function stop() {
-  d1 = new Date();
-  document.getElementById('timerLabel').innerHTML = (d1.getTime() - newStartTime) / 1000;
-  status = 0;
-  document.getElementById("startBtn").disabled = false;
-}
-function reset() {
-  status = 0;
-  time = 0;
-  document.getElementById('timerLabel').innerHTML = '0.000';
-  document.getElementById("startBtn").disabled = false;
-}
-
-document.onkeyup = function (event) {
-  if (event) {
-    if (event.keyCode == 32 && timertrue == 1) {
-      if (status == 0) {
-        reset();
-        start();
-      }
-
-      if (timertrue == 1) {
-        timertrue = 2;
-      }
-
-    }
-  }
-};
-document.onkeydown = function (event) {
-  if (event) {
-
-    if (status == 1) {
-      stop();
-      saveTime();
-      $('#status').hide()
+function generateScramble2(){
       Cube.asyncScramble(function (alg) {
         let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces	
         let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
         $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
         scramble = alg
       });
+}
+
+//timer
+var status = 0;
+var timertrue = 0;
+var scramble;
+var inspection;
+var inspectionrunning;
+
+function start() {
+  status = 1;
+  newStartTime = new Date().getTime();
+  document.getElementById('timerLabel').innerHTML = 'timing';
+
+}
+function stop() {
+  document.getElementById('timerLabel').innerHTML = (new Date().getTime() - newStartTime) / 1000;
+  status = 0;
+}
+function reset() {
+  status = 0;
+  document.getElementById('timerLabel').innerHTML = '0.000';
+}
+
+document.onkeyup = function (event) {
+    if (event.keyCode == 32 && timertrue == 1) {
+      if (status == 0 && !inspection) {
+        reset();
+        start();
+        if (timertrue == 1) {
+        timertrue = 2;
+      }
+      } else if (status == 0 && inspectionrunning) {
+        inspectionrunning = false
+        reset();
+        start();
+        if (timertrue == 1) {
+        timertrue = 2;
+      }
+      }
+      else if (status == 0 && inspection) {
+        startInspection()
+      }
+    }
+};
+document.onkeydown = function (event) {
+    if (status == 1) {
+      stop();
+      saveTime();
+      generateScramble2();
     }
     if (timertrue == 0) {
       timertrue = 1;
     }
-    if (timertrue == 2) {
+    if (timertrue == 2 && !inspectionrunning) {
       timertrue = 0;
     }
-
-  }
 };
+
+function startInspection() {
+var timeleft = 15
+inspectionrunning = true
+document.getElementById("timerLabel").innerHTML = timeleft;
+var x = setInterval(function() {
+if (inspectionrunning == true) {
+timeleft = timeleft -1
+document.getElementById("timerLabel").innerHTML = timeleft;
+} else {
+  clearInterval(x);
+}
+}, 1000)
+}
 
 var selectedEvent;
 //switch between sessions
@@ -141,7 +155,6 @@ var scrambles222;
 var pbsingle;
 var pbao5;
 var pbao12;
-var inspection;
 var tbody = document.getElementById("tbody"), row, cell1, cell2, cell3, cell4;
 
 function check() { //resets everything to saved values or NULL
@@ -183,8 +196,8 @@ function check() { //resets everything to saved values or NULL
     else if (localStorage.savedinspection == 'false') {
     inspection = false //this because localStorage saves booleans as strings, so (inspection) will return true instead of false
     }
-    document.getElementById("inspectiOn").innerHTML = inspection
   }
+  document.getElementById("inspectiOn").innerHTML = inspection
   document.getElementById("currentAo5").innerHTML = "Ao5: --.--"
   document.getElementById("currentAo12").innerHTML = "Ao12: --.--"
   document.getElementById("ao5atm").innerHTML = "--.--"
@@ -256,9 +269,8 @@ function makeTable(p) { //makes table + calculates averages
       cell2 = row.insertCell()
       cell2.innerHTML = scrambles222[i]
       if (i >= 4) {
-        var t222ao5 = [times222[i], times222[i - 1], times222[i - 2], times222[i - 3], times222[i - 4]];
-        floatTimes(t222ao5);
-	const arrSum = arr => arr.reduce((a, b) => a + b, 0)
+        var t222ao5 = [parseFloat(times222[i]), parseFloat(times222[i - 1]), parseFloat(times222[i - 2]), parseFloat(times222[i - 3]), parseFloat(times222[i - 4])];
+        const arrSum = arr => arr.reduce((a, b) => a + b, 0)
         const arrMin = arr => Math.min(...arr)
         const arrMax = arr => Math.max(...arr)
         var ao5 = ((arrSum(t222ao5) - arrMin(t222ao5) - arrMax(t222ao5)) / 3).toFixed(3)
@@ -307,7 +319,11 @@ window.onkeydown = function(e) {
 };
 
 function settings() {
+  if (document.getElementById("settingsmenu").style.visibility == "visible") {
+    document.getElementById("settingsmenu").style.visibility = "hidden"
+  } else {
     document.getElementById("settingsmenu").style.visibility = "visible"
+  }
 }
 function closeSettings() {
     document.getElementById("settingsmenu").style.visibility = "hidden"
