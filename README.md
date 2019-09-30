@@ -23,7 +23,7 @@ CubeTimer is a speedcubing timer being developed by Mattheo de Wit (2015WITM01).
   * Scrambles are not shown immediately, but when you click on the time
   * Changed the size of the timer and scramble
   * Changed the position of the "drawn scramble"
-  * Added 2x2 Scrambler
+  * Added 2x2 - 7x7 Scrambler (4x4 scrambler needs Fix)
 
 ### v0.0.3 (9/26/2019):
 * Created a second session to see if the process of switching sesssions works
