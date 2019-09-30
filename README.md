@@ -8,6 +8,7 @@ CubeTimer is a speedcubing timer being developed by Mattheo de Wit (2015WITM01).
 * PB's will now be shown
 * Ao12's will now be calculated and shown under the timer
 * Mo3, Ao50 and Ao100 will also be calculated, but not shown under the timer
+* Added settings menu
 * Added inspection-time option
 * Added more sessions (WCA & casual)
 * New layout:
