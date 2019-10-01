@@ -10,7 +10,7 @@ CubeTimer is a speedcubing timer being developed by Mattheo de Wit (2015WITM01).
   * Added inspection-time option
 * You can now only start the timer at least 1 second after stopping it
   * This is to prevent the timer from starting when releasing space when you stopped it with a different key
-* Added more sessions (All WCA events + some casual sessions)
+* Added more session symbols (2x2 - 6x6 are working properly)
 * New layout:
   * Created sidebar at the right:
     * More sessions are now shown
