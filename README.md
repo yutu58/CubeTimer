@@ -4,18 +4,18 @@ CubeTimer is a speedcubing timer being developed by Mattheo de Wit (2015WITM01).
 
 ## Changelog:
 
-### v0.1.0 (9/30/2019):
-* PB's will now be shown
+### v0.1.0 (1/10/2019):
 * Ao12's will now be calculated and shown under the timer
-* Mo3, Ao50 and Ao100 will also be calculated, but not shown under the timer
 * Added settings menu
-* Added inspection-time option
-* Added more sessions (2x2 - 6x6)
+  * Added inspection-time option
+* You can now only start the timer at least 1 second after stopping it
+  * This is to prevent the timer from starting when releasing space when you stopped it with a different key
+* Added more sessions (All WCA events + some casual sessions)
 * New layout:
   * Created sidebar at the right:
     * More sessions are now shown
     * Added a button for the settings
-    * Added a button to export/import times
+    * Added a button to export/import times (not working yet)
   * Created a sidebar at the left:
     * Updated button to delete session
     * Added a window where you can see your current averages
