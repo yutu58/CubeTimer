@@ -4,7 +4,7 @@ CubeTimer is a speedcubing timer being developed by Mattheo de Wit (2015WITM01).
 
 ## Changelog:
 
-### v0.1.0 (1/10/2019):
+### v0.1.0 (10/1/2019):
 * Ao12's will now be calculated and shown under the timer
 * Added settings menu
   * Added inspection-time option
