@@ -60,7 +60,7 @@
 })();
 
 function generateScramble2(){
-    if (selectedEvent == 333) {
+    if (selectedEvent == 333 || selectedEvent == 108 || selectedEvent == 106) {
     Cube.asyncScramble(function (alg) {
       let safeAlgo = alg.replace(/\s+/g, ''); // remove spaces
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=3&alg=x2${safeAlgo}`;
@@ -73,13 +73,13 @@ function generateScramble2(){
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=2&alg=x2${safeAlgo}`;
       $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
       scramble = alg
-    } else if (selectedEvent == 444) {
+    } else if (selectedEvent == 444 || selectedEvent == 110) {
       let alg = scramblers["444"].getRandomScramble().scramble_string
       let safeAlgo = alg.replace(/\s+/g, '')
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=4&alg=x2${safeAlgo}`;
       $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
       scramble = alg
-    } else if (selectedEvent == 555) {
+    } else if (selectedEvent == 555 || selectedEvent == 111) {
       let alg = scramblers["555"].getRandomScramble().scramble_string
       let safeAlgo = alg.replace(/\s+/g, '')
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=5&alg=x2${safeAlgo}`;
@@ -90,6 +90,26 @@ function generateScramble2(){
       let safeAlgo = alg.replace(/\s+/g, '')
       let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=6&alg=x2${safeAlgo}`;
       $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
+      scramble = alg
+    } else if (selectedEvent == 777) {
+      let alg = scramblers["777"].getRandomScramble().scramble_string
+      let safeAlgo = alg.replace(/\s+/g, '')
+      let url = `http://cube.crider.co.uk/visualcube.php?fmt=svg&size=150&pzl=7&alg=x2${safeAlgo}`;
+      $('#randomstate .result').html(`${alg}<br><img src=\"${url}\">`);
+      scramble = alg
+    } else if (selectedEvent == 102) {
+      var scrabble = scramblers["pyram"].getRandomScramble()
+      let alg = scrabble.scramble_string
+      $('#randomstate .result').html(`${alg}
+      <br><div id="drawn"></div>`)
+      scramblers["pyram"].drawScramble("drawn", scrabble.state, 250, 250)
+      scramble = alg
+    } else if (selectedEvent == 104) {
+      var scrabble = scramblers["sq1"].getRandomScramble()
+      let alg = scrabble.scramble_string
+      $('#randomstate .result').html(`${alg}
+      <br><div id="drawn"></div>`)
+      scramblers["sq1"].drawScramble("drawn", scrabble.state, 250, 250)
       scramble = alg
     }
 }
@@ -109,7 +129,7 @@ function start() {
 
 }
 function stop() {
-  document.getElementById('timerLabel').innerHTML = (new Date().getTime() - newStartTime) / 1000;
+  document.getElementById('timerLabel').innerHTML = ((new Date().getTime() - newStartTime) / 1000).toFixed(3);
   status = 0;
 
   //bugdelay to stop starting the timer when stopping it with multiple keys
@@ -146,7 +166,7 @@ document.onkeyup = function (event) {
 document.onkeydown = function (event) {
     if (status == 1) {
       stop();
-      saveTime();
+      saveTime(selectedEvent);
       generateScramble2();
     }
     if (timertrue == 0) {
@@ -176,6 +196,8 @@ var selectedEvent;
 
 function switchEvent(p) {
   if (p != selectedEvent) {
+  document.getElementById("to" + p).className = "highlighted"
+  document.getElementById("to" + selectedEvent).className = "clickable"
   document.getElementById("selectedsession").innerHTML = p
   check()
   selectedEvent = p
@@ -196,78 +218,56 @@ var times555;
 var scrambles555;
 var times666;
 var scrambles666;
+var times777;
+var scrambles777;
+var times101;
+var scrambles101;
+var times102;
+var scrambles102;
+var times103;
+var scrambles103;
+var times104;
+var scrambles104;
+var times105;
+var scrambles105;
+var times106;
+var scrambles106;
+var times107;
+var scrambles107;
+var times108;
+var scrambles108;
+var times109;
+var scrambles109;
+var times110;
+var scrambles110;
+var times111;
+var scrambles111;
+var times112;
+var scrambles112;
+var penalty;
 var tbody = document.getElementById("tbody"), row, cell1, cell2, cell3, cell4;
 
+var allTimes = [times333,times222,times444,times555,times666,times777,times101,times102,times103,times104,times105,times106,times107,times108,times109,times110,times111,times112]
+var allScrambles = [scrambles333,scrambles222,scrambles444,scrambles555,scrambles666,scrambles777,scrambles101,scrambles102,scrambles103,scrambles104,scrambles105,scrambles106,scrambles107,scrambles108,scrambles109,scrambles110,scrambles111,scrambles112]
+var events = [333,222,444,555,666,777,101,102,103,104,105,106,107,108,109,110,111,112]
+
 function check() { //resets everything to saved values or NULL
-  if (!localStorage.savedtimes333) {
-    times333 = []
-  }
-  else {
-    var savings333 = localStorage.savedtimes333.split(",")
-    times333 = savings333
-  }
-
-  if (!localStorage.savedscrambles333) {
-    scrambles333 = []
-  }
-  else {
-    scrambles333 = localStorage.savedscrambles333.split(",")
-  }
-
-  if (!localStorage.savedtimes222) {
-    times222 = []
-  }
-  else {
-    times222 = localStorage.savedtimes222.split(",")
-  }
-  if (!localStorage.savedscrambles222) {
-    scrambles222 = []
-  }
-  else {
-    scrambles222 = localStorage.savedscrambles222.split(",")
-  }
-
-  if (!localStorage.savedtimes444) {
-    times444 = []
-  }
-  else {
-    times444 = localStorage.savedtimes444.split(",")
-  }
-  if (!localStorage.savedscrambles444) {
-    scrambles444 = []
-  }
-  else {
-    scrambles444 = localStorage.savedscrambles444.split(",")
-  }
-
-  if (!localStorage.savedtimes555) {
-    times555 = []
-  }
-  else {
-    times555 = localStorage.savedtimes555.split(",")
-  }
-  if (!localStorage.savedscrambles555) {
-    scrambles555 = []
-  }
-  else {
-    scrambles555 = localStorage.savedscrambles555.split(",")
-  }
-
-  if (!localStorage.savedtimes666) {
-    times666 = []
-  }
-  else {
-    times666 = localStorage.savedtimes666.split(",")
-  }
-  if (!localStorage.savedscrambles666) {
-    scrambles666 = []
-  }
-  else {
-    scrambles666 = localStorage.savedscrambles666.split(",")
+  for (var i=0; i<events.length; i++) {
+    if (localStorage.getItem("savedtimes" + events[i])){
+    allTimes[i] = localStorage.getItem("savedtimes" + events[i]).split(",")
+    } else if (!localStorage.getItem("savedtimes" + events[i])){
+      allTimes[i] = []
+    }
+    if (localStorage.getItem("savedscrambles" + events[i])){
+    allScrambles[i] = localStorage.getItem("savedscrambles" + events[i]).split(",")
+    } else if (!localStorage.getItem("savedscrambles" + events[i])){
+      allScrambles[i] = []
+    }
   }
 
   if (!localStorage.savedinspection) {
     inspection = false
+    document.getElementById("OffInspection").style.fontWeight = "bold"
   }
   else {
     if (localStorage.savedinspection == 'true') {
@@ -286,44 +286,16 @@ function check() { //resets everything to saved values or NULL
   document.getElementById("ao12atm").innerHTML = "--.--"
 }
 
-function saveTime() {
+function saveTime(p) {
+  penalty = false;
   check(); //check if there are times/scrambles saved
   clearTable(); //empty the current list of times/scrambles
-  if (selectedEvent == 333) {
-    times333.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
-    scrambles333.push(scramble) //add new scramble to scramble-array
-    localStorage.savedtimes333 = times333 //resave new times
-    localStorage.savedscrambles333 = scrambles333 //resave new scrambles
-    makeTable(333);//make new list of times/scrambles
-  }
-  else if (selectedEvent == 222) {
-    times222.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
-    scrambles222.push(scramble) //add new scramble to scramble-array
-    localStorage.savedtimes222 = times222 //resave new times
-    localStorage.savedscrambles222 = scrambles222 //resave new scrambles
-    makeTable(222);//make new list of times/scrambles
-  }
-  else if (selectedEvent == 444) {
-    times444.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
-    scrambles444.push(scramble) //add new scramble to scramble-array
-    localStorage.savedtimes444 = times444 //resave new times
-    localStorage.savedscrambles444 = scrambles444 //resave new scrambles
-    makeTable(444);//make new list of times/scrambles
-  }
-  else if (selectedEvent == 555) {
-    times555.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
-    scrambles555.push(scramble) //add new scramble to scramble-array
-    localStorage.savedtimes555 = times555 //resave new times
-    localStorage.savedscrambles555 = scrambles555 //resave new scrambles
-    makeTable(555);//make new list of times/scrambles
-  }
-  else if (selectedEvent == 666) {
-    times666.push(document.getElementById("timerLabel").innerHTML) //add new time to time-array
-    scrambles666.push(scramble) //add new scramble to scramble-array
-    localStorage.savedtimes666 = times666 //resave new times
-    localStorage.savedscrambles666 = scrambles666 //resave new scrambles
-    makeTable(666);//make new list of times/scrambles
-  }
+      var j = events.indexOf(p)
+      allTimes[j].push(parseFloat(document.getElementById("timerLabel").innerHTML))
+      allScrambles[j].push(scramble)
+      localStorage.setItem("savedtimes" + p, allTimes[j])
+      localStorage.setItem("savedscrambles" + p, allScrambles[j])
+      makeTable(p)
 }
 
 function clearTable() {
@@ -331,167 +303,39 @@ function clearTable() {
 }
 
 function makeTable(p) { //makes table + calculates averages
-  if (p == 333) {
-    for (var i = 0; i < times333.length; i++) {
+    var k = events.indexOf(p)
+    for (var i = 0; i < allTimes[k].length; i++) {
       row = tbody.insertRow()
       cell1 = row.insertCell()
-      cell1.innerHTML = times333[i]
+      var z = parseFloat(allTimes[k][i])
+      cell1.innerHTML = z.toFixed(3)
       cell2 = row.insertCell()
-      cell2.innerHTML = scrambles333[i]
+      cell2.innerHTML = allScrambles[k][i]
       if (i >= 4) {
-        var t333ao5 = [times333[i], times333[i - 1], times333[i - 2], times333[i - 3], times333[i - 4]];
-        floatTimes(t333ao5)
+        var tao5 = [allTimes[k][i], allTimes[k][i - 1], allTimes[k][i - 2], allTimes[k][i - 3], allTimes[k][i - 4]];
+        floatTimes(tao5)
         const arrSum = arr => arr.reduce((a, b) => a + b, 0)
         const arrMin = arr => Math.min(...arr)
         const arrMax = arr => Math.max(...arr)
-        var ao5 = ((arrSum(t333ao5) - arrMin(t333ao5) - arrMax(t333ao5)) / 3).toFixed(3)
+        var ao5 = ((arrSum(tao5) - arrMin(tao5) - arrMax(tao5)) / 3).toFixed(3)
         document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
         document.getElementById("ao5atm").innerHTML = ao5
         cell3 = row.insertCell()
         cell3.innerHTML = ao5
       }
       if (i>=11){
-        var t333ao12 = [times333[i], times333[i-1], times333[i-2], times333[i-3], times333[i-4], times333[i-5], times333[i-6], times333[i-7], times333[i-8], times333[i-9], times333[i-10], times333[i-11]];
-        floatTimes(t333ao12);
+        var tao12 = [allTimes[k][i], allTimes[k][i-1], allTimes[k][i-2], allTimes[k][i-3], allTimes[k][i-4], allTimes[k][i-5], allTimes[k][i-6], allTimes[k][i-7], allTimes[k][i-8], allTimes[k][i-9], allTimes[k][i-10], allTimes[k][i-11]];
+        floatTimes(tao12);
         const arrSum = arr => arr.reduce((a,b) => a + b, 0)
         const arrMin = arr => Math.min(...arr)
         const arrMax = arr => Math.max(...arr)
-        var ao12 = ((arrSum(t333ao12) - arrMin(t333ao12) - arrMax(t333ao12)) / 10).toFixed(3)
+        var ao12 = ((arrSum(tao12) - arrMin(tao12) - arrMax(tao12)) / 10).toFixed(3)
         document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
         document.getElementById("ao12atm").innerHTML = ao12
         cell4 = row.insertCell()
         cell4.innerHTML = ao12
       }
     }
-  }
-  else if (p == 222) {
-    for (var i = 0; i < times222.length; i++) {
-      row = tbody.insertRow()
-      cell1 = row.insertCell()
-      cell1.innerHTML = times222[i]
-      cell2 = row.insertCell()
-      cell2.innerHTML = scrambles222[i]
-      if (i >= 4) {
-        var t222ao5 = [parseFloat(times222[i]), parseFloat(times222[i - 1]), parseFloat(times222[i - 2]), parseFloat(times222[i - 3]), parseFloat(times222[i - 4])];
-        const arrSum = arr => arr.reduce((a, b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao5 = ((arrSum(t222ao5) - arrMin(t222ao5) - arrMax(t222ao5)) / 3).toFixed(3)
-        document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
-        document.getElementById("ao5atm").innerHTML = ao5
-        cell3 = row.insertCell()
-        cell3.innerHTML = ao5
-      }
-      if (i>=11){
-        var t222ao12 = [times222[i], times222[i-1], times222[i-2], times222[i-3], times222[i-4], times222[i-5], times222[i-6], times222[i-7], times222[i-8], times222[i-9], times222[i-10], times222[i-11]];
-        floatTimes(t222ao12);
-        const arrSum = arr => arr.reduce((a,b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao12 = ((arrSum(t222ao12) - arrMin(t222ao12) - arrMax(t222ao12)) / 10).toFixed(3)
-        document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
-        document.getElementById("ao12atm").innerHTML = ao12
-        cell4 = row.insertCell()
-        cell4.innerHTML = ao12
-      }
-    }
-  }
-    else if (p == 444) {
-    for (var i = 0; i < times444.length; i++) {
-      row = tbody.insertRow()
-      cell1 = row.insertCell()
-      cell1.innerHTML = times444[i]
-      cell2 = row.insertCell()
-      cell2.innerHTML = scrambles444[i]
-      if (i >= 4) {
-        var t444ao5 = [parseFloat(times444[i]), parseFloat(times444[i - 1]), parseFloat(times444[i - 2]), parseFloat(times444[i - 3]), parseFloat(times444[i - 4])];
-        const arrSum = arr => arr.reduce((a, b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao5 = ((arrSum(t444ao5) - arrMin(t444ao5) - arrMax(t444ao5)) / 3).toFixed(3)
-        document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
-        document.getElementById("ao5atm").innerHTML = ao5
-        cell3 = row.insertCell()
-        cell3.innerHTML = ao5
-      }
-      if (i>=11){
-        var t444ao12 = [times444[i], times444[i-1], times444[i-2], times444[i-3], times444[i-4], times444[i-5], times444[i-6], times444[i-7], times444[i-8], times444[i-9], times444[i-10], times444[i-11]];
-        floatTimes(t444ao12);
-        const arrSum = arr => arr.reduce((a,b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao12 = ((arrSum(t444ao12) - arrMin(t444ao12) - arrMax(t444ao12)) / 10).toFixed(3)
-        document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
-        document.getElementById("ao12atm").innerHTML = ao12
-        cell4 = row.insertCell()
-        cell4.innerHTML = ao12
-      }
-    }
-  }
-  else if (p == 555) {
-    for (var i = 0; i < times555.length; i++) {
-      row = tbody.insertRow()
-      cell1 = row.insertCell()
-      cell1.innerHTML = times555[i]
-      cell2 = row.insertCell()
-      cell2.innerHTML = scrambles555[i]
-      if (i >= 4) {
-        var t555ao5 = [parseFloat(times555[i]), parseFloat(times555[i - 1]), parseFloat(times555[i - 2]), parseFloat(times555[i - 3]), parseFloat(times555[i - 4])];
-        const arrSum = arr => arr.reduce((a, b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao5 = ((arrSum(t555ao5) - arrMin(t555ao5) - arrMax(t555ao5)) / 3).toFixed(3)
-        document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
-        document.getElementById("ao5atm").innerHTML = ao5
-        cell3 = row.insertCell()
-        cell3.innerHTML = ao5
-      }
-      if (i>=11){
-        var t555ao12 = [times555[i], times555[i-1], times555[i-2], times555[i-3], times555[i-4], times555[i-5], times555[i-6], times555[i-7], times555[i-8], times555[i-9], times555[i-10], times555[i-11]];
-        floatTimes(t555ao12);
-        const arrSum = arr => arr.reduce((a,b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao12 = ((arrSum(t555ao12) - arrMin(t555ao12) - arrMax(t555ao12)) / 10).toFixed(3)
-        document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
-        document.getElementById("ao12atm").innerHTML = ao12
-        cell4 = row.insertCell()
-        cell4.innerHTML = ao12
-      }
-    }
-  }
-  else if (p == 666) {
-    for (var i = 0; i < times666.length; i++) {
-      row = tbody.insertRow()
-      cell1 = row.insertCell()
-      cell1.innerHTML = times666[i]
-      cell2 = row.insertCell()
-      cell2.innerHTML = scrambles666[i]
-      if (i >= 4) {
-        var t666ao5 = [parseFloat(times666[i]), parseFloat(times666[i - 1]), parseFloat(times666[i - 2]), parseFloat(times666[i - 3]), parseFloat(times666[i - 4])];
-        const arrSum = arr => arr.reduce((a, b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao5 = ((arrSum(t666ao5) - arrMin(t666ao5) - arrMax(t666ao5)) / 3).toFixed(3)
-        document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
-        document.getElementById("ao5atm").innerHTML = ao5
-        cell3 = row.insertCell()
-        cell3.innerHTML = ao5
-      }
-      if (i>=11){
-        var t666ao12 = [times666[i], times666[i-1], times666[i-2], times666[i-3], times666[i-4], times666[i-5], times666[i-6], times666[i-7], times666[i-8], times666[i-9], times666[i-10], times666[i-11]];
-        floatTimes(t666ao12);
-        const arrSum = arr => arr.reduce((a,b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao12 = ((arrSum(t666ao12) - arrMin(t666ao12) - arrMax(t666ao12)) / 10).toFixed(3)
-        document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
-        document.getElementById("ao12atm").innerHTML = ao12
-        cell4 = row.insertCell()
-        cell4.innerHTML = ao12
-      }
-    }
-  }
 }
 
 function floatTimes(p){
@@ -520,8 +364,13 @@ function settings() {
     document.getElementById("settingsmenu").style.visibility = "visible"
   }
 }
-function closeSettings() {
-    document.getElementById("settingsmenu").style.visibility = "hidden"
+
+function showupload() {
+    if (document.getElementById("uploadmenu").style.visibility == "visible") {
+    document.getElementById("uploadmenu").style.visibility = "hidden"
+  } else {
+    document.getElementById("uploadmenu").style.visibility = "visible"
+  }
 }
 
 function inspectionf(){
@@ -551,3 +400,41 @@ document.getElementById("invisibleHeaderRight2").style.visibility = "hidden"
 check();
 selectedEvent = 333
 makeTable(333);
+
+function removelasttime(){
+
+}
+
+function nopenalty() {
+var p = selectedEvent
+if (penalty) {
+clearTable();
+check();
+var k = events.indexOf(p)
+allTimes[k][(allTimes[k].length-1)] = parseFloat(allTimes[k][allTimes[k].length-1]) - 2
+penalty = false;
+localStorage.setItem("savedtimes" + p, allTimes[k])
+localStorage.setItem("savedscrambles" + p, allScrambles[k])
+makeTable(p)
+document.getElementById("timerLabel").innerHTML = (parseFloat(document.getElementById("timerLabel").innerHTML) - 2).toFixed(3)
+}
+}
+
+function penalty2() {
+var p = selectedEvent
+if (!penalty && document.getElementById("timerLabel").innerHTML != "0.000") {
+clearTable();
+check();
+var k = events.indexOf(p)
+allTimes[k][(allTimes[k].length-1)] = parseFloat(allTimes[k][allTimes[k].length-1]) + 2
+penalty = true;
+localStorage.setItem("savedtimes" + p, allTimes[k])
+localStorage.setItem("savedscrambles" + p, allScrambles[k])
+makeTable(p)
+document.getElementById("timerLabel").innerHTML = (parseFloat(document.getElementById("timerLabel").innerHTML) + 2).toFixed(3)
+}
+}
+
+function penaltyDNF() {
+
+}
