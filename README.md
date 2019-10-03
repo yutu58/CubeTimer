@@ -4,6 +4,13 @@ CubeTimer is a speedcubing timer being developed by Mattheo de Wit (2015WITM01).
 
 ## Changelog:
 
+### v0.1.1 (10/3/2019):
+* Reduced the amount of JS needed by like 50%
+* Fixed Import / Export times buttons
+* All sessions can now save times
+* Added 7x7 (old), 4bld(old), 5bld(old), pyraminx(old), OH and feet scrambles
+* The selected session will now be highlighted
+
 ### v0.1.0 (10/1/2019):
 * Ao12's will now be calculated and shown under the timer
 * Added settings menu

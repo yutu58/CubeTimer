@@ -163,7 +163,7 @@ document.onkeyup = function (event) {
       }
     }
 };
-document.onkeydown = function (event) {
+document.onkeydown = function () {
     if (status == 1) {
       stop();
       saveTime(selectedEvent);
@@ -245,6 +245,8 @@ var scrambles111;
 var times112;
 var scrambles112;
 var penalty;
+var isitdnf;
+var originaltime;
 var tbody = document.getElementById("tbody"), row, cell1, cell2, cell3, cell4;
 
 var allTimes = [times333,times222,times444,times555,times666,times777,times101,times102,times103,times104,times105,times106,times107,times108,times109,times110,times111,times112]
@@ -288,6 +290,7 @@ function check() { //resets everything to saved values or NULL
 
 function saveTime(p) {
   penalty = false;
+  isitdnf = false;
   check(); //check if there are times/scrambles saved
   clearTable(); //empty the current list of times/scrambles
       var j = events.indexOf(p)
@@ -307,8 +310,13 @@ function makeTable(p) { //makes table + calculates averages
     for (var i = 0; i < allTimes[k].length; i++) {
       row = tbody.insertRow()
       cell1 = row.insertCell()
+      if (allTimes[k][i] != -1) {
       var z = parseFloat(allTimes[k][i])
       cell1.innerHTML = z.toFixed(3)
+      }
+      else if (allTimes[k][i] == -1){
+        cell1.innerHTML = "DNF"
+      }
       cell2 = row.insertCell()
       cell2.innerHTML = allScrambles[k][i]
       if (i >= 4) {
@@ -353,7 +361,7 @@ function removetimes() {
 }
 
 //stop it from scrolling down when pressing space
-window.onkeydown = function(e) { 
+window.onkeydown = function(e) {
   return !(e.keyCode == 32);
 };
 
@@ -401,9 +409,6 @@ check();
 selectedEvent = 333
 makeTable(333);
 
-function removelasttime(){
-
-}
 
 function nopenalty() {
 var p = selectedEvent
@@ -418,11 +423,22 @@ localStorage.setItem("savedscrambles" + p, allScrambles[k])
 makeTable(p)
 document.getElementById("timerLabel").innerHTML = (parseFloat(document.getElementById("timerLabel").innerHTML) - 2).toFixed(3)
 }
+else if (isitdnf) {
+clearTable();
+check();
+var k = events.indexOf(p)
+allTimes[k][(allTimes[k].length-1)] = parseFloat(originaltime)
+isitdnf = false;
+localStorage.setItem("savedtimes" + p, allTimes[k])
+localStorage.setItem("savedscrambles" + p, allScrambles[k])
+makeTable(p)
+document.getElementById("timerLabel").innerHTML = (parseFloat(originaltime).toFixed(3))
+}
 }
 
 function penalty2() {
 var p = selectedEvent
-if (!penalty && document.getElementById("timerLabel").innerHTML != "0.000") {
+if (!penalty && document.getElementById("timerLabel").innerHTML != "0.000" && !isitdnf) {
 clearTable();
 check();
 var k = events.indexOf(p)
@@ -436,5 +452,21 @@ document.getElementById("timerLabel").innerHTML = (parseFloat(document.getElemen
 }
 
 function penaltyDNF() {
+var p = selectedEvent
+if (!isitdnf && document.getElementById("timerLabel").innerHTML != "0.000" && !penalty) {
+  clearTable();
+  check();
+  var k = events.indexOf(p)
+  allTimes[k][(allTimes[k].length-1)] = -1
+  isitdnf = true;
+  localStorage.setItem("savedtimes" + p, allTimes[k])
+  localStorage.setItem("savedscrambles" + p, allScrambles[k])
+  makeTable(p)
+  originaltime = document.getElementById("timerLabel").innerHTML
+  document.getElementById("timerLabel").innerHTML = "DNF"
+}
+}
 
+function calculateAVG(p){
+//calculate dnf avf
 }
