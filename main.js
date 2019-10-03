@@ -197,7 +197,7 @@ var selectedEvent;
 function switchEvent(p) {
   if (p != selectedEvent) {
   document.getElementById("to" + p).className = "highlighted"
-  document.getElementById("to" + selectedEvent).className = "clickable"
+  document.getElementById("to" + selectedEvent).className = "cuboicon"
   document.getElementById("selectedsession").innerHTML = p
   check()
   selectedEvent = p
@@ -208,42 +208,7 @@ function switchEvent(p) {
 }
 
 //saving times
-var times333;
-var scrambles333;
-var times222;
-var scrambles222;
-var times444;
-var scrambles444;
-var times555;
-var scrambles555;
-var times666;
-var scrambles666;
-var times777;
-var scrambles777;
-var times101;
-var scrambles101;
-var times102;
-var scrambles102;
-var times103;
-var scrambles103;
-var times104;
-var scrambles104;
-var times105;
-var scrambles105;
-var times106;
-var scrambles106;
-var times107;
-var scrambles107;
-var times108;
-var scrambles108;
-var times109;
-var scrambles109;
-var times110;
-var scrambles110;
-var times111;
-var scrambles111;
-var times112;
-var scrambles112;
+var times333, scrambles333, times222, scrambles222, times444, scrambles444, times555, scrambles555, times666, scrambles666, times777, scrambles777, times101, scrambles101, times102, scrambles102, times103, scrambles103, times104, scrambles104, times105, scrambles105, times106, scrambles106, times107, scrambles107, times108, scrambles108, times109, scrambles109, times110, scrambles110, times111, scrambles111, times112, scrambles112
 var penalty;
 var isitdnf;
 var originaltime;
@@ -320,24 +285,14 @@ function makeTable(p) { //makes table + calculates averages
       cell2 = row.insertCell()
       cell2.innerHTML = allScrambles[k][i]
       if (i >= 4) {
-        var tao5 = [allTimes[k][i], allTimes[k][i - 1], allTimes[k][i - 2], allTimes[k][i - 3], allTimes[k][i - 4]];
-        floatTimes(tao5)
-        const arrSum = arr => arr.reduce((a, b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao5 = ((arrSum(tao5) - arrMin(tao5) - arrMax(tao5)) / 3).toFixed(3)
+        var ao5 = calculateAVG(5,i)
         document.getElementById("currentAo5").innerHTML = "Ao5: " + ao5
         document.getElementById("ao5atm").innerHTML = ao5
         cell3 = row.insertCell()
         cell3.innerHTML = ao5
       }
       if (i>=11){
-        var tao12 = [allTimes[k][i], allTimes[k][i-1], allTimes[k][i-2], allTimes[k][i-3], allTimes[k][i-4], allTimes[k][i-5], allTimes[k][i-6], allTimes[k][i-7], allTimes[k][i-8], allTimes[k][i-9], allTimes[k][i-10], allTimes[k][i-11]];
-        floatTimes(tao12);
-        const arrSum = arr => arr.reduce((a,b) => a + b, 0)
-        const arrMin = arr => Math.min(...arr)
-        const arrMax = arr => Math.max(...arr)
-        var ao12 = ((arrSum(tao12) - arrMin(tao12) - arrMax(tao12)) / 10).toFixed(3)
+        var ao12 = calculateAVG(12,i)
         document.getElementById("currentAo12").innerHTML = "Ao12: " + ao12
         document.getElementById("ao12atm").innerHTML = ao12
         cell4 = row.insertCell()
@@ -467,6 +422,36 @@ if (!isitdnf && document.getElementById("timerLabel").innerHTML != "0.000" && !p
 }
 }
 
-function calculateAVG(p){
-//calculate dnf avf
+function calculateAVG(c, d){ //calculate average of c, last solve of avg = c
+    var k = events.indexOf(selectedEvent)
+    var lowtoremove = 0
+    var hightoremove = 0
+    var numbertoremove = Math.ceil(c/20)
+    const arrSum = arr => arr.reduce((a, b) => a + b, 0)
+    var t = []
+    for (var j=0; j<c; j++) {
+        t[t.length] = allTimes[k][d-j]
+    }
+    floatTimes(t)
+    t.sort()
+
+    //count DNF"s
+    var DNFcount = 0
+    for(var m = 0; m < t.length; ++m){
+        if(t[m] == -1){
+            DNFcount++;
+        }
+    }
+
+    if (DNFcount > numbertoremove) {
+        return "DNF"
+    }
+    //remove fast and slow times
+    for (var l=0; l<numbertoremove; l++) {
+        lowtoremove += t[l+DNFcount]
+    }
+    for (l=0; l<(numbertoremove - DNFcount); l++) {
+        hightoremove += t[t.length-1-l]
+    }
+    return ((arrSum(t) + DNFcount - lowtoremove - hightoremove) / (c-2*numbertoremove)).toFixed(3)
 }

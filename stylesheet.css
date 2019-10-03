@@ -1,0 +1,126 @@
+   * {
+        margin: 0;
+        padding: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+    }
+
+    #randomstate {
+    }
+
+    .headerRight {
+	    width: 5%;
+			height: 100%;
+			background: #bbb;
+			font-size: 20px;
+			text-align: center;
+      position: right;
+      z-index: 1;
+      position: fixed;
+      right: 0;
+		}
+
+    #invisibleHeaderRight {
+	    width: 5%;
+			height: 100%;
+			background: #bbb;
+			font-size: 20px;
+      position: right;
+      position: fixed;
+      margin-left: 90%;
+      text-align: center;
+      z-index: 50;
+      visibility: hidden;
+    }
+
+    #invisibleHeaderRight2 {
+	    width: 5%;
+			height: 100%;
+			background: #bbb;
+			font-size: 20px;
+      position: right;
+      position: fixed;
+      margin-left: 85%;
+      text-align: center;
+      z-index: 50;
+      visibility: hidden;
+    }
+
+    .headerLeft {
+ 	    width: 5%;
+			height: 100%;
+			background: #bbb;
+			font-size: 20px;
+      position: left;
+      position: fixed;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    #divresult {
+      width: 90%;
+      height: 100%;
+      margin-left: 5%;
+      margin-top: 0;
+      text-align: center;
+      position: relative;
+    }
+
+    #algtable {
+      width: 90%;
+      height: 100%;
+      text-align: center;
+      margin-left: 5%;
+    }
+
+    #timerLabel{
+      font-size: 70px;
+    }
+
+    .averages {
+      font-size: 30px;
+    }
+
+    .cuboicon {
+      cursor: pointer;
+      text-align: center;
+      margin-top: 5%;
+      }
+
+    .bottom {
+      border-bottom: 5px solid red;
+      margin-top: 30%;
+    }
+
+    #settingsmenu {
+      visibility: hidden;
+      z-index: 100;
+      position: absolute;
+      height: 50%;
+      width: 50%;
+      text-align: center;
+      margin-left: 25%;
+      background-color: #bbb;
+      border-radius: 5%;
+    }
+
+    #uploadmenu {
+      visibility: hidden;
+      z-index: 100;
+      position: absolute;
+      height: 50%;
+      width: 50%;
+      text-align: center;
+      margin-left: 25%;
+      background-color: #bbb;
+      border-radius: 5%;
+    }
+
+    .highlighted {
+      outline-color: red;
+      outline-style: solid;
+      outline-width: 4px;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 5%;
+    }
