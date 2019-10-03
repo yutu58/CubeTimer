@@ -7,6 +7,13 @@
   <title>Cube Timer v0.1.0</title>
   <meta name="description" content="Cube Timer v0.1.0">
   <style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+    }
+
     #randomstate {
     }
     
@@ -18,7 +25,7 @@
 			text-align: center;
       position: right;
       z-index: 1;
-      position: absolute;
+      position: fixed;
       right: 0;
 		}
 
@@ -28,7 +35,7 @@
 			background: #bbb;
 			font-size: 20px;
       position: right;
-      position: absolute;
+      position: fixed;
       margin-left: 90%;
       text-align: center;
       z-index: 50;
@@ -41,7 +48,7 @@
 			background: #bbb;
 			font-size: 20px;
       position: right;
-      position: absolute;
+      position: fixed;
       margin-left: 85%;
       text-align: center;
       z-index: 50;
@@ -54,37 +61,44 @@
 			background: #bbb;
 			font-size: 20px;
       position: left;
-      overflow-x: hidden;
       position: fixed;
-      display: block;
+      overflow-x: hidden;
       text-align: center;
     }
     
-    .test{
+    #divresult {
       width: 90%;
-      height: 100%
-      font-size: 20px;
+      height: 100%;
       margin-left: 5%;
+      margin-top: 0;
       text-align: center;
+      position: relative;
+    }
+
+    #algtable {
+      width: 90%;
+      height: 100%;
+      text-align: center;
+      margin-left: 5%;
     }
 
     #timerLabel{
-      font-size: 50px;
+      font-size: 70px;
     }
 
     .averages {
       font-size: 30px;
     }
 
-    .clickable {
+    .cuboicon {
       cursor: pointer;
       text-align: center;
-      margin-top: 0px;
-      margin-bottom: 0px;
+      margin-top: 5%;
       }
 
     .bottom {
       border-bottom: 5px solid red;
+      margin-top: 30%;
     }
 
     #settingsmenu {
@@ -99,6 +113,27 @@
       border-radius: 5%;
     }
 
+    #uploadmenu {
+      visibility: hidden;
+      z-index: 100;
+      position: absolute;
+      height: 50%;
+      width: 50%;
+      text-align: center;
+      margin-left: 25%;
+      background-color: #bbb;
+      border-radius: 5%;
+    }
+
+    .highlighted {
+      outline-color: red;
+      outline-style: solid;
+      outline-width: 4px;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 5%;
+    }
+
   </style>
     
   <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
@@ -106,76 +141,92 @@
   <script src="./lib/cube.js" type="text/javascript"></script>
   <script src="./lib/async.js" type="text/javascript"></script>
   <script src="main.js" type="text/javascript" defer></script>
+  <script src="downloader.js" type="text/javascript" defer></script>
   <script src="scramble_222.js" type="text/javascript" defer></script>
     <script src="scramble_NNN.js" type="text/javascript" defer></script>
+  <script src="scramble_pyram.js" type="text/javascript" defer></script>
+  <script src="scramble_sq1.js" type="text/javascript" defer></script>
+  <script src="./lib/raphael-min.js" type="text/javascript" defer></script>
   <link rel="shortcut icon" href="">
 </head>
 
 <body>
+<!-- upload menu -->
+<div id="uploadmenu">
+<ol>
+  <li>Open your downloaded file in a text editor (like notepad)</li>
+  <li>Copy-Paste the text in the text-box below</li>
+  <li>Press upload to go back to the downloaded state</li>
+</ol>
+<textarea rows="10" cols="50" id="uploadarea"></textarea>
+<br />
+<button onclick="upload()">Upload</button><button onclick="showupload()">Close</button>
+</div>
 <!--Settings menu -->
 <div id="settingsmenu">
   <p>Inspection time: <span id="OnInspection" onclick="inspectionf()">ON</span>/<span id="OffInspection" onclick="inspectionf()">OFF</span></p>
   <p id="inspectiOn"></p>
-  <button style="margin-top:20%" onclick="closeSettings()">Close</button>
+  <button style="margin-top:20%" onclick="settings()">Close</button>
 </div>
 
 <!-- columns at the left -->
-  <div class="headerLeft">
-    <p class="bottom"><img src="https://i.imgur.com/8cc3QHz.jpg" width="70%" onclick="removetimes()" class="clickable"></p>
+<div class="headerLeft">
+    <p class="bottom"><img src="https://i.imgur.com/8cc3QHz.jpg" width="70%" onclick="removetimes()" class="cuboicon"></p>
 
-    <ul style="list-style-type:none;padding:0;">  
+    <ul style="list-style-type:none;">  
       <li id="ao5atm">--.--</li>
       <li id="ao12atm">--.--</li>
     </ul>
-  </div>
+</div>
 
 <!-- columns at the right -->
 <div class="headerRight" onmouseover="showAll()">
-  <p class="bottom"><img src="https://i.imgur.com/lrhLUdi.jpg" width="80%" onclick="settings()" class="clickable"></p>
+  <p class="bottom"><img src="https://i.imgur.com/lrhLUdi.jpg" width="80%" onclick="settings()" class="cuboicon"></p>
 	<p id="selectedsession">333</p>
-	<img src="https://i.imgur.com/Ajdx9BE.jpg" width="70%" onclick="switchEvent(333)" class="clickable">
-  <img src="https://i.imgur.com/ayQpXoY.jpg" width="70%" onclick="switchEvent(222)" class="clickable">
-  <img src="https://i.imgur.com/ZFEHJ8e.jpg" width="70%" onclick="switchEvent(444)" class="clickable">
-  <img src="https://i.imgur.com/NISV1tC.jpg" width="70%" onclick="switchEvent(555)" class="clickable">
-  <img src="https://i.imgur.com/MlCqKHM.jpg" width="70%" onclick="switchEvent(666)" class="clickable">
-  <img src="https://i.imgur.com/aFJktmC.jpg" width="70%" onclick="switchEvent(777)" class="clickable">
+	<img src="https://i.imgur.com/Ajdx9BE.jpg" width="70%" onclick="switchEvent(333)" class="highlighted" id="to333">
+  <img src="https://i.imgur.com/ayQpXoY.jpg" width="70%" onclick="switchEvent(222)" class="cuboicon" id="to222">
+  <img src="https://i.imgur.com/ZFEHJ8e.jpg" width="70%" onclick="switchEvent(444)" class="cuboicon" id="to444">
+  <img src="https://i.imgur.com/NISV1tC.jpg" width="70%" onclick="switchEvent(555)" class="cuboicon" id="to555">
+  <img src="https://i.imgur.com/MlCqKHM.jpg" width="70%" onclick="switchEvent(666)" class="cuboicon" id="to666">
+  <img src="https://i.imgur.com/aFJktmC.jpg" width="70%" onclick="switchEvent(777)" class="cuboicon" id="to777">
 </div>
 <div id="invisibleHeaderRight">
   <p class="bottom">
-    <img src="https://i.imgur.com/NyJPSdj.jpg" width="80%" onclick="settings()" class="clickable">
+    <img src="https://i.imgur.com/NyJPSdj.jpg" width="80%" onclick="readytodownload()" class="cuboicon">
   </p>
   <p><br /></p>
-  <img src="https://i.imgur.com/nl7kyI2.jpg" width="70%" onclick="switchEvent(109)" class="clickable">
-  <img src="https://i.imgur.com/Y3wNVLN.jpg" width="70%" onclick="switchEvent(101)" class="clickable">
-  <img src="https://i.imgur.com/IVXg8gW.jpg" width="70%" onclick="switchEvent(104)" class="clickable">
-  <img src="https://i.imgur.com/Dhbclxd.jpg" width="70%" onclick="switchEvent(106)" class="clickable">
-  <img src="https://i.imgur.com/I4FAQOp.jpg" width="70%" onclick="switchEvent(110)" class="clickable">
-  <img src="https://i.imgur.com/k9RA8yi.jpg" width="70%" onclick="switchEvent(112)" class="clickable">
+  <img src="https://i.imgur.com/nl7kyI2.jpg" width="70%" onclick="switchEvent(109)" class="cuboicon" id="to109">
+  <img src="https://i.imgur.com/Y3wNVLN.jpg" width="70%" onclick="switchEvent(101)" class="cuboicon" id="to101">
+  <img src="https://i.imgur.com/IVXg8gW.jpg" width="70%" onclick="switchEvent(104)" class="cuboicon" id="to104">
+  <img src="https://i.imgur.com/Dhbclxd.jpg" width="70%" onclick="switchEvent(106)" class="cuboicon" id="to106">
+  <img src="https://i.imgur.com/I4FAQOp.jpg" width="70%" onclick="switchEvent(110)" class="cuboicon" id="to110">
+  <img src="https://i.imgur.com/k9RA8yi.jpg" width="70%" onclick="switchEvent(112)" class="cuboicon" id="to112">
 </div>
 <div id="invisibleHeaderRight2">
   <p class="bottom">
-    <img src="https://i.imgur.com/ifUVpqn.jpg" width="80%" onclick="settings()" class="clickable">
+    <img src="https://i.imgur.com/ifUVpqn.jpg" width="80%" onclick="showupload()" class="cuboicon">
   </p>
   <p><br /></p>
-  <img src="https://i.imgur.com/rE39XPg.jpg" width="70%" onclick="switchEvent(108)" class="clickable">
-  <img src="https://i.imgur.com/mFSNaEm.jpg" width="70%" onclick="switchEvent(102)" class="clickable">
-  <img src="https://i.imgur.com/WqkHgU1.jpg" width="70%" onclick="switchEvent(103)" class="clickable">
-  <img src="https://i.imgur.com/OuYTnHX.jpg" width="70%" onclick="switchEvent(105)" class="clickable">
-  <img src="https://i.imgur.com/ZsAxTAZ.jpg" width="70%" onclick="switchEvent(107)" class="clickable">
-  <img src="https://i.imgur.com/ybyWEuL.jpg" width="70%" onclick="switchEvent(111)" class="clickable">
+  <img src="https://i.imgur.com/rE39XPg.jpg" width="70%" onclick="switchEvent(108)" class="cuboicon" id="to108">
+  <img src="https://i.imgur.com/mFSNaEm.jpg" width="70%" onclick="switchEvent(102)" class="cuboicon" id="to102">
+  <img src="https://i.imgur.com/WqkHgU1.jpg" width="70%" onclick="switchEvent(103)" class="cuboicon" id="to103">
+  <img src="https://i.imgur.com/OuYTnHX.jpg" width="70%" onclick="switchEvent(105)" class="cuboicon" id="to105">
+  <img src="https://i.imgur.com/ZsAxTAZ.jpg" width="70%" onclick="switchEvent(107)" class="cuboicon" id="to107">
+  <img src="https://i.imgur.com/ybyWEuL.jpg" width="70%" onclick="switchEvent(111)" class="cuboicon" id="to111">
 </div>
 
 <!-- scramble + image -->
-<div class="test"  onmouseout="hideAll()" style="font-size:30px;font-weight:Bold">
+<div id="divresult" onmouseout="hideAll()" style="font-size:30px;font-weight:Bold">
   <p id="status"></p>
-  <p id="randomstate">
+  <p id="randomstate" style="padding:2%">
     <!--<button>Generate random scramble</button><br>-->
-    <span class="result"></span>
+    <span class="result" id="result"</span>
   </p>
   <h1 id="timerLabel">0.000</h1>
   <input hidden type="button" onclick="start()" id="startBtn">
+  <p><span class="cuboicon" onclick="nopenalty()">OK</span> / <span class="cuboicon" onclick="penalty2()">+2</span> / <span class="cuboicon" onclick="penaltyDNF()">DNF</span></p>
   <div class="averages">
-  <p id="currentAo5">Ao5: --.--</p>
+  <p id="currentAo5" style="margin:2%">Ao5: --.--</p>
   <p id="currentAo12">Ao12: --.--</p>
   </div>
 </div>
