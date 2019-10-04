@@ -367,7 +367,7 @@ makeTable(333);
 
 function nopenalty() {
 var p = selectedEvent
-if (penalty) {
+if (penalty && !inspectionrunning && status != 1) {
 clearTable();
 check();
 var k = events.indexOf(p)
@@ -393,7 +393,7 @@ document.getElementById("timerLabel").innerHTML = (parseFloat(originaltime).toFi
 
 function penalty2() {
 var p = selectedEvent
-if (!penalty && document.getElementById("timerLabel").innerHTML != "0.000" && !isitdnf) {
+if (!penalty && document.getElementById("timerLabel").innerHTML != "0.000" && !isitdnf && !inspectionrunning && status != 1) {
 clearTable();
 check();
 var k = events.indexOf(p)
@@ -408,7 +408,7 @@ document.getElementById("timerLabel").innerHTML = (parseFloat(document.getElemen
 
 function penaltyDNF() {
 var p = selectedEvent
-if (!isitdnf && document.getElementById("timerLabel").innerHTML != "0.000" && !penalty) {
+if (!isitdnf && document.getElementById("timerLabel").innerHTML != "0.000" && !penalty && !inspectionrunning && status != 1) {
   clearTable();
   check();
   var k = events.indexOf(p)
