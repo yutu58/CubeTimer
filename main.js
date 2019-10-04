@@ -433,7 +433,7 @@ function calculateAVG(c, d){ //calculate average of c, last solve of avg = c
         t[t.length] = allTimes[k][d-j]
     }
     floatTimes(t)
-    t.sort()
+    t.sort(function(a, b){return a-b})
 
     //count DNF"s
     var DNFcount = 0
@@ -450,8 +450,8 @@ function calculateAVG(c, d){ //calculate average of c, last solve of avg = c
     for (var l=0; l<numbertoremove; l++) {
         lowtoremove += t[l+DNFcount]
     }
-    for (l=0; l<(numbertoremove - DNFcount); l++) {
-        hightoremove += t[t.length-1-l]
+    for (var n=0; n<(numbertoremove - DNFcount); n++) {
+        hightoremove += t[t.length-1-n]
     }
     return ((arrSum(t) + DNFcount - lowtoremove - hightoremove) / (c-2*numbertoremove)).toFixed(3)
 }
